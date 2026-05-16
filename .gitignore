@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Tooling
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# ML / experiment artifacts
+mlruns/
+mlartifacts/
+.mlflow/
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.joblib
+wandb/
+
+# DVC / data (keep pointers, ignore heavy local caches)
+.dvc/cache/
+.dvc/tmp/
+/data/raw/**
+!/data/raw/.gitkeep
+!/data/raw/*.dvc
+/data/processed/**
+!/data/processed/.gitkeep
+!/data/processed/*.dvc
+/models/**
+!/models/.gitkeep
+!/models/*.dvc
+/metrics/**
+!/metrics/.gitkeep
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Docker
+*.log
