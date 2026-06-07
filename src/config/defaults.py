@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-
 DEFAULT_CONFIG: dict[str, Any] = {
     "project_name": "fiap-postech-fase02",
     "random_seed": 42,

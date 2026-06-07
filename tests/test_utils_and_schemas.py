@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import pytest
 from pydantic import ValidationError
-
 from src.schemas import Interaction, InteractionBatch
 from src.utils import seeded_sample, set_seed
 

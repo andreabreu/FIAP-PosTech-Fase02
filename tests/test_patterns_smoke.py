@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pytest
-
 from src.features.preprocessors import PassthroughPreprocessor
 from src.models import ModelFactory
 
