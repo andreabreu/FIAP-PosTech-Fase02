@@ -1,12 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "fiap-postech-fase02"
 version = "0.1.0"
 description = "FIAP Tech Challenge Fase 02 — e-commerce recommender"
 readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Andre Abreu", email = "andre.abreu@live.com" },
+  { name = "Elizandra Monteiro", email = "monteiroelizandra2017@gmail.com" },
+]
 dependencies = [
   "pydantic>=2.0",
   "pydantic-settings>=2.0",
+  "numpy>=1.26",
+  "pandas>=2.1",
+  "pyyaml>=6.0",
+  "python-dotenv>=1.0",
 ]
 
 [project.optional-dependencies]
@@ -16,10 +29,20 @@ dev = [
   "pre-commit>=3.0",
 ]
 
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.6",
+  "pre-commit>=3.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
 [tool.ruff]
 line-length = 88
 target-version = "py311"
-src = ["src", "tests"]
+src = ["src", "tests", "scripts"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
