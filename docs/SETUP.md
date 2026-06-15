@@ -1,0 +1,40 @@
+# Setup — ambiente limpo (uv)
+
+## Pré-requisitos
+
+- Python **3.11+**
+- [uv](https://docs.astral.sh/uv/) (recomendado) **ou** Poetry
+
+## Instalação com uv (recomendado)
+
+```bash
+cd FIAP-PosTech-Fase02
+uv sync --all-groups
+cp .env.example .env
+uv run python scripts/validate_env.py
+```
+
+Isso usa `pyproject.toml` + `uv.lock` para reinstalar as mesmas versões.
+
+## Instalação com Poetry (alternativa)
+
+```bash
+poetry install --with dev
+cp .env.example .env
+poetry run python scripts/validate_env.py
+```
+
+> Se preferir Poetry, gere `poetry.lock` localmente; o repositório oficializa o lock via **uv**.
+
+## Validação rápida
+
+```bash
+uv run pytest -q
+uv run ruff check src tests scripts
+uv run python scripts/validate_env.py
+```
+
+## Variáveis de ambiente
+
+Copie `.env.example` → `.env` e ajuste URIs locais.  
+**Nunca** faça commit do `.env` real.

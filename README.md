@@ -21,3 +21,16 @@ Stack alvo: **PyTorch** (MLP ou embeddings), **Scikit-Learn** (baselines), **DVC
 ## Status
 
 Repositório em fase inicial (kickoff). Estrutura, pipeline e modelo serão evoluídos em commits semânticos.
+
+## Setup
+
+Ambiente reproduzível com **uv** (lock commitado):
+
+```bash
+uv sync --all-groups
+cp .env.example .env
+uv run python scripts/validate_env.py
+```
+
+Detalhes em [docs/SETUP.md](docs/SETUP.md).
+
