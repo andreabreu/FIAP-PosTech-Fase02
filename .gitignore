@@ -60,3 +60,18 @@ wandb/
 
 # Docker
 *.log
+
+# Local tooling / OS
+*.egg
+.cache/
+.python-version
+.coverage.*
+coverage.xml
+.hypothesis/
+.ipynb_checkpoints/
+
+# DVC local config overrides
+.dvc/config.local
+
+# Compiled / packaging leftovers
+pip-wheel-metadata/
