@@ -34,3 +34,4 @@ uv run python scripts/validate_env.py
 
 Detalhes em [docs/SETUP.md](docs/SETUP.md).
 
+Checklist completo: [docs/INSTALL_CHECKLIST.md](docs/INSTALL_CHECKLIST.md).
