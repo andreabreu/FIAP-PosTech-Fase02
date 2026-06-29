@@ -52,8 +52,13 @@ wandb/
 /models/**
 !/models/.gitkeep
 !/models/*.dvc
+!/models/*.json
 /metrics/**
 !/metrics/.gitkeep
+!/metrics/*.json
+
+# Local DVC remote (filesystem)
+.dvc-remote/
 
 # Notebooks checkpoints
 .ipynb_checkpoints/

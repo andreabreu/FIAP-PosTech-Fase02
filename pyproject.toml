@@ -48,6 +48,7 @@ dev = [
   "pytest>=8.0",
   "ruff>=0.6",
   "pre-commit>=3.0",
+  "dvc>=3.67.1",
 ]
 
 [tool.hatch.build.targets.wheel]
