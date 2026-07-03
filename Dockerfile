@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_LINK_MODE=copy \
     UV_PYTHON_DOWNLOADS=0
 
-WORKDIR /app
+WORKDIR /build
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \
@@ -16,11 +16,11 @@ RUN apt-get update \
 
 COPY --from=ghcr.io/astral-sh/uv:0.7.12 /uv /usr/local/bin/uv
 
+# Dependency layer first (better cache)
 COPY pyproject.toml uv.lock README.md ./
 COPY src ./src
-
 RUN uv sync --frozen --no-dev --no-editable \
-    && find /app/.venv -type d -name "__pycache__" -prune -exec rm -rf {} +
+    && find /build/.venv -type d -name "__pycache__" -prune -exec rm -rf {} +
 
 FROM python:3.11-slim-bookworm AS runtime
 
@@ -36,12 +36,14 @@ RUN useradd --create-home --uid 10001 --shell /usr/sbin/nologin appuser \
     && mkdir -p /app/data/raw /app/data/processed /app/models /app/metrics /app/mlruns \
     && chown -R appuser:appuser /app
 
-COPY --from=builder --chown=appuser:appuser /app/.venv /app/.venv
+COPY --from=builder --chown=appuser:appuser /build/.venv /app/.venv
 COPY --chown=appuser:appuser pyproject.toml uv.lock README.md ./
 COPY --chown=appuser:appuser src ./src
 COPY --chown=appuser:appuser configs ./configs
 COPY --chown=appuser:appuser scripts ./scripts
 
 USER appuser
+
+WORKDIR /app
 
 CMD ["python", "-m", "src.training.entrypoint"]
