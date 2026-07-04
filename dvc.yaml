@@ -1,0 +1,16 @@
+stages:
+  preprocess:
+    cmd: uv run python scripts/run_preprocess.py
+      --input data/raw/interactions.csv
+      --output data/processed/interactions_clean.csv
+      --metrics metrics/preprocess.json
+    deps:
+      - data/raw/interactions.csv
+      - scripts/run_preprocess.py
+      - src/data/preprocess.py
+      - src/schemas/interactions.py
+    outs:
+      - data/processed/interactions_clean.csv
+    metrics:
+      - metrics/preprocess.json:
+          cache: false
