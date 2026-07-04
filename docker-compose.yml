@@ -31,6 +31,12 @@ services:
       RANDOM_SEED: "42"
       MODEL_NAME: mlp
       EMBEDDING_DIM: "32"
+      MODELS_DIR: /app/models
+      METRICS_DIR: /app/metrics
+    volumes:
+      - ./models:/app/models
+      - ./metrics:/app/metrics
+      - train_mlruns:/app/mlruns
     depends_on:
       mlflow:
         condition: service_healthy
@@ -38,3 +44,4 @@ services:
 
 volumes:
   mlflow_data:
+  train_mlruns:
