@@ -38,3 +38,7 @@ uv run python scripts/validate_env.py
 
 Copie `.env.example` → `.env` e ajuste URIs locais.  
 **Nunca** faça commit do `.env` real.
+
+## Docker
+
+Ver [DOCKER.md](DOCKER.md) para `docker compose up --build` (treino + MLflow).
