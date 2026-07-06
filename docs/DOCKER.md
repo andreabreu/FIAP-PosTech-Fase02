@@ -4,7 +4,7 @@
 
 | Serviço | Porta | Função |
 |---------|-------|--------|
-| `mlflow` | `5000` | Tracking server MLflow |
+| `mlflow` | `5001`→5000 | Tracking server MLflow |
 | `train` | — | Job de treino (`src.training.entrypoint`) ligado ao MLflow |
 
 ## Caminho recomendado (treino + MLflow)
@@ -14,7 +14,7 @@
 docker compose up --build
 
 # UI
-open http://127.0.0.1:5000
+open http://127.0.0.1:5001
 ```
 
 Fluxo esperado:
