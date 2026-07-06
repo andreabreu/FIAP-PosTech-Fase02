@@ -6,39 +6,29 @@ from typing import Any
 
 from src.domain.interfaces import RecommenderModel
 from src.models.base import PlaceholderRecommender
+from src.models.baselines import PopularityRecommender, SVDRecommender
+from src.models.mlp import MLPRecommender
 
 
 class ModelFactory:
     """Create recommender models by registered name."""
 
     _registry: dict[str, type[RecommenderModel]] = {
-        "mlp": PlaceholderRecommender,
-        "embedding": PlaceholderRecommender,
+        "mlp": MLPRecommender,
+        "embedding": MLPRecommender,
+        "popularity": PopularityRecommender,
+        "svd": SVDRecommender,
+        "placeholder": PlaceholderRecommender,
     }
 
     @classmethod
     def available(cls) -> list[str]:
-        """List registered model names.
-
-        Returns:
-            list[str]: Available model keys.
-        """
+        """List registered model names."""
         return sorted(cls._registry)
 
     @classmethod
     def create(cls, name: str, **hparams: Any) -> RecommenderModel:
-        """Instantiate a model from the registry.
-
-        Args:
-            name: Registered model name.
-            **hparams: Model hyperparameters.
-
-        Returns:
-            RecommenderModel: New model instance.
-
-        Raises:
-            KeyError: If the model name is unknown.
-        """
+        """Instantiate a model from the registry."""
         if name not in cls._registry:
             known = ", ".join(cls.available())
             raise KeyError(f"unknown model '{name}'. known: {known}")
