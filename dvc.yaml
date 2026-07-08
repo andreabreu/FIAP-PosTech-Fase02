@@ -14,3 +14,20 @@ stages:
     metrics:
       - metrics/preprocess.json:
           cache: false
+
+  feature_eng:
+    cmd: uv run python scripts/run_feature_eng.py
+      --input data/processed/interactions_clean.csv
+      --output-dir data/processed/features
+      --params params.yaml
+      --metrics metrics/feature_eng.json
+    deps:
+      - data/processed/interactions_clean.csv
+      - scripts/run_feature_eng.py
+      - src/features/engineering.py
+      - params.yaml
+    outs:
+      - data/processed/features
+    metrics:
+      - metrics/feature_eng.json:
+          cache: false
