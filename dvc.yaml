@@ -31,3 +31,37 @@ stages:
     metrics:
       - metrics/feature_eng.json:
           cache: false
+
+  train:
+    cmd: uv run python scripts/run_train.py
+      --train data/processed/features/train.csv
+      --params params.yaml
+      --model-out models/recommender_stub.json
+      --metrics metrics/train.json
+    deps:
+      - data/processed/features/train.csv
+      - scripts/run_train.py
+      - src/models
+      - params.yaml
+    outs:
+      - models/recommender_stub.json:
+          cache: false
+    metrics:
+      - metrics/train.json:
+          cache: false
+
+  evaluate:
+    cmd: uv run python scripts/run_evaluate.py
+      --train data/processed/features/train.csv
+      --test data/processed/features/test.csv
+      --model models/recommender_stub.json
+      --metrics metrics/evaluate.json
+      --k 10
+    deps:
+      - data/processed/features/train.csv
+      - data/processed/features/test.csv
+      - models/recommender_stub.json
+      - scripts/run_evaluate.py
+    metrics:
+      - metrics/evaluate.json:
+          cache: false
