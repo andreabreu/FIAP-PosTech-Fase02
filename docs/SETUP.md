@@ -42,3 +42,12 @@ Copie `.env.example` → `.env` e ajuste URIs locais.
 ## Docker
 
 Ver [DOCKER.md](DOCKER.md) para `docker compose up --build` (treino + MLflow).
+
+## DVC
+
+```bash
+uv run dvc pull
+uv run dvc repro
+```
+
+Detalhes em [DVC.md](DVC.md).

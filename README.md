@@ -20,7 +20,7 @@ Stack alvo: **PyTorch** (MLP ou embeddings), **Scikit-Learn** (baselines), **DVC
 
 ## Status
 
-Repositório em fase inicial (kickoff). Estrutura, pipeline e modelo serão evoluídos em commits semânticos.
+Base de engenharia pronta: clean code, Docker/Compose (treino + MLflow), DVC pipeline (`preprocess` → `feature_eng` → `train` → `evaluate`). Modelo PyTorch completo e Registry entram na próxima fase.
 
 ## Setup
 
@@ -37,3 +37,5 @@ Detalhes em [docs/SETUP.md](docs/SETUP.md).
 Checklist completo: [docs/INSTALL_CHECKLIST.md](docs/INSTALL_CHECKLIST.md).
 
 Docker/Compose: [docs/DOCKER.md](docs/DOCKER.md).
+
+DVC (dados + pipeline): [docs/DVC.md](docs/DVC.md).
