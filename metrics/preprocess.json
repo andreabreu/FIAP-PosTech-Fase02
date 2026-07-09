@@ -1,0 +1,7 @@
+{
+  "raw_rows": 12000,
+  "valid_rows": 12000,
+  "clean_rows": 11920,
+  "n_users": 800,
+  "n_items": 1200
+}

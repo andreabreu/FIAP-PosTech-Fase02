@@ -1,0 +1,8 @@
+{
+  "input_rows": 11920,
+  "filtered_rows": 11920,
+  "train_rows": 9532,
+  "test_rows": 2388,
+  "n_users": 800,
+  "n_items": 1200
+}

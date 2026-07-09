@@ -1,0 +1,8 @@
+{
+  "model_name": "mlp",
+  "n_test_rows": 2388,
+  "n_test_users": 800,
+  "popularity_hit_rate_at_10": 0.02375,
+  "test_item_coverage": 0.865833,
+  "status": "ok"
+}

@@ -1,0 +1,121 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: uv run python scripts/run_preprocess.py --input 
+      data/raw/interactions.csv --output data/processed/interactions_clean.csv 
+      --metrics metrics/preprocess.json
+    deps:
+    - path: data/raw/interactions.csv
+      hash: md5
+      md5: 69dcfee3c5da237cafc0807cdf8c6d81
+      size: 484240
+    - path: scripts/run_preprocess.py
+      hash: md5
+      md5: 977b7cb4e8bc63bbb089d5896c674c62
+      size: 1047
+    - path: src/data/preprocess.py
+      hash: md5
+      md5: a83892a98f5c9dbdb07f9c8d8fa470af
+      size: 4164
+    - path: src/schemas/interactions.py
+      hash: md5
+      md5: e1c9fe6ae4fa53556c2710714588ac87
+      size: 1331
+    outs:
+    - path: data/processed/interactions_clean.csv
+      hash: md5
+      md5: 8243afc9b0768ba1a14394906446c293
+      size: 518734
+    - path: metrics/preprocess.json
+      hash: md5
+      md5: 8d8949167e4864b7ffae929fb7124d10
+      size: 106
+  feature_eng:
+    cmd: uv run python scripts/run_feature_eng.py --input 
+      data/processed/interactions_clean.csv --output-dir data/processed/features
+      --params params.yaml --metrics metrics/feature_eng.json
+    deps:
+    - path: data/processed/interactions_clean.csv
+      hash: md5
+      md5: 8243afc9b0768ba1a14394906446c293
+      size: 518734
+    - path: params.yaml
+      hash: md5
+      md5: 4c4f01093672eaf70b38b75c0c608c55
+      size: 224
+    - path: scripts/run_feature_eng.py
+      hash: md5
+      md5: ec06916c9aa7100034605e8997bf2194
+      size: 1168
+    - path: src/features/engineering.py
+      hash: md5
+      md5: 1a6224ac774a5adae1f0b6f3cdf63310
+      size: 4599
+    outs:
+    - path: data/processed/features
+      hash: md5
+      md5: 33c864008ff96c6e09c734b007ca14f5.dir
+      size: 649505
+      nfiles: 3
+    - path: metrics/feature_eng.json
+      hash: md5
+      md5: 55f7d20c5ef69900d62384e3d928332e
+      size: 131
+  train:
+    cmd: uv run python scripts/run_train.py --train 
+      data/processed/features/train.csv --params params.yaml --model-out 
+      models/recommender_stub.json --metrics metrics/train.json
+    deps:
+    - path: data/processed/features/train.csv
+      hash: md5
+      md5: c1d18e54d3c67cbd8a8444bdba26682b
+      size: 490544
+    - path: params.yaml
+      hash: md5
+      md5: 4c4f01093672eaf70b38b75c0c608c55
+      size: 224
+    - path: scripts/run_train.py
+      hash: md5
+      md5: 240a4d9ad96c674b9211c5bc3b2e32d2
+      size: 2390
+    - path: src/models
+      hash: md5
+      md5: 0a40acf4b07f0e69379cdf65bfd1e5c7.dir
+      size: 7392
+      nfiles: 6
+    outs:
+    - path: metrics/train.json
+      hash: md5
+      md5: 462dce7a0e3c7270159380524ff58fee
+      size: 113
+    - path: models/recommender_stub.json
+      hash: md5
+      md5: 462dce7a0e3c7270159380524ff58fee
+      size: 113
+  evaluate:
+    cmd: uv run python scripts/run_evaluate.py --train 
+      data/processed/features/train.csv --test data/processed/features/test.csv 
+      --model models/recommender_stub.json --metrics metrics/evaluate.json --k 
+      10
+    deps:
+    - path: data/processed/features/test.csv
+      hash: md5
+      md5: d8d87608758a514365418acbadc5e86e
+      size: 122902
+    - path: data/processed/features/train.csv
+      hash: md5
+      md5: c1d18e54d3c67cbd8a8444bdba26682b
+      size: 490544
+    - path: models/recommender_stub.json
+      hash: md5
+      md5: 462dce7a0e3c7270159380524ff58fee
+      size: 113
+    - path: scripts/run_evaluate.py
+      hash: md5
+      md5: 3a40311b45c6c5ee2f1ec1917e8bdc43
+      size: 2617
+    outs:
+    - path: metrics/evaluate.json
+      hash: md5
+      md5: 7447748e1c41dcc49682e72a1d69f004
+      size: 163
