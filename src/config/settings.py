@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     batch_size: int = Field(default=256, ge=1)
     max_epochs: int = Field(default=20, ge=1)
     early_stopping_patience: int = Field(default=5, ge=1)
-    mlflow_tracking_uri: str = Field(default="http://127.0.0.1:5000")
+    mlflow_tracking_uri: str = Field(default="sqlite:///mlflow.db")
     mlflow_experiment_name: str = Field(default="recommender-fase02")
     log_level: str = Field(default="INFO")
 
