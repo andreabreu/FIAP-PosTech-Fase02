@@ -1,7 +1,16 @@
 {
   "model_name": "mlp",
+  "best_epoch": 1,
+  "best_val_loss": 0.693381,
   "n_train_rows": 9532,
   "n_users": 800,
   "n_items": 1200,
-  "status": "stub_fitted"
+  "model_path": "models/recommender.pt",
+  "status": "fitted",
+  "precision_at_10": 0.003125,
+  "recall_at_10": 0.01,
+  "hit_rate_at_10": 0.03125,
+  "ndcg_at_10": 0.005912,
+  "n_eval_users": 800.0,
+  "k": 10
 }

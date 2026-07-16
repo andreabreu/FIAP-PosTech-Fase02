@@ -11,8 +11,13 @@ feature_eng:
 train:
   model_name: mlp
   embedding_dim: 32
+  hidden_dim: 64
   batch_size: 256
-  max_epochs: 20
+  max_epochs: 12
+  early_stopping_patience: 4
+  learning_rate: 0.001
+  val_ratio: 0.1
+  neg_per_pos: 1
   seed: 42
 
 evaluate:
