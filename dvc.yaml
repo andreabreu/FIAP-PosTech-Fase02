@@ -35,16 +35,21 @@ stages:
   train:
     cmd: uv run python scripts/run_train.py
       --train data/processed/features/train.csv
+      --test data/processed/features/test.csv
       --params params.yaml
-      --model-out models/recommender_stub.json
+      --model-out models/recommender.pt
       --metrics metrics/train.json
+      --no-mlflow
     deps:
       - data/processed/features/train.csv
+      - data/processed/features/test.csv
       - scripts/run_train.py
       - src/models
+      - src/training
+      - src/evaluation
       - params.yaml
     outs:
-      - models/recommender_stub.json:
+      - models/recommender.pt:
           cache: false
     metrics:
       - metrics/train.json:
@@ -54,14 +59,15 @@ stages:
     cmd: uv run python scripts/run_evaluate.py
       --train data/processed/features/train.csv
       --test data/processed/features/test.csv
-      --model models/recommender_stub.json
+      --model models/recommender.pt
       --metrics metrics/evaluate.json
       --k 10
     deps:
       - data/processed/features/train.csv
       - data/processed/features/test.csv
-      - models/recommender_stub.json
+      - models/recommender.pt
       - scripts/run_evaluate.py
+      - src/evaluation
     metrics:
       - metrics/evaluate.json:
           cache: false

@@ -41,8 +41,8 @@ stages:
       size: 518734
     - path: params.yaml
       hash: md5
-      md5: 4c4f01093672eaf70b38b75c0c608c55
-      size: 224
+      md5: 35344034e8722a4cc7b9ee951348f0bc
+      size: 327
     - path: scripts/run_feature_eng.py
       hash: md5
       md5: ec06916c9aa7100034605e8997bf2194
@@ -63,40 +63,9 @@ stages:
       size: 131
   train:
     cmd: uv run python scripts/run_train.py --train 
-      data/processed/features/train.csv --params params.yaml --model-out 
-      models/recommender_stub.json --metrics metrics/train.json
-    deps:
-    - path: data/processed/features/train.csv
-      hash: md5
-      md5: c1d18e54d3c67cbd8a8444bdba26682b
-      size: 490544
-    - path: params.yaml
-      hash: md5
-      md5: 4c4f01093672eaf70b38b75c0c608c55
-      size: 224
-    - path: scripts/run_train.py
-      hash: md5
-      md5: 479cfed30afb298f30b9058400a5b355
-      size: 2389
-    - path: src/models
-      hash: md5
-      md5: 0a40acf4b07f0e69379cdf65bfd1e5c7.dir
-      size: 7392
-      nfiles: 6
-    outs:
-    - path: metrics/train.json
-      hash: md5
-      md5: 462dce7a0e3c7270159380524ff58fee
-      size: 113
-    - path: models/recommender_stub.json
-      hash: md5
-      md5: 462dce7a0e3c7270159380524ff58fee
-      size: 113
-  evaluate:
-    cmd: uv run python scripts/run_evaluate.py --train 
       data/processed/features/train.csv --test data/processed/features/test.csv 
-      --model models/recommender_stub.json --metrics metrics/evaluate.json --k 
-      10
+      --params params.yaml --model-out models/recommender.pt --metrics 
+      metrics/train.json --no-mlflow
     deps:
     - path: data/processed/features/test.csv
       hash: md5
@@ -106,16 +75,66 @@ stages:
       hash: md5
       md5: c1d18e54d3c67cbd8a8444bdba26682b
       size: 490544
-    - path: models/recommender_stub.json
+    - path: params.yaml
       hash: md5
-      md5: 462dce7a0e3c7270159380524ff58fee
-      size: 113
+      md5: 35344034e8722a4cc7b9ee951348f0bc
+      size: 327
+    - path: scripts/run_train.py
+      hash: md5
+      md5: 57b941c77ed6f628a4722acaff3808b6
+      size: 1430
+    - path: src/evaluation
+      hash: md5
+      md5: e4c9dadd0d7f85d1d4cf103bde864890.dir
+      size: 11938
+      nfiles: 4
+    - path: src/models
+      hash: md5
+      md5: cac9950cb9e378b81a598c0ef84a0c0c.dir
+      size: 35554
+      nfiles: 10
+    - path: src/training
+      hash: md5
+      md5: b38d932f8c0166798cc7ad82a331fb24.dir
+      size: 47498
+      nfiles: 11
+    outs:
+    - path: metrics/train.json
+      hash: md5
+      md5: 18b1d397dbf9a68152ccf18fbf5a07de
+      size: 343
+    - path: models/recommender.pt
+      hash: md5
+      md5: e2e186caefa2351cb04e24780a433b49
+      size: 276165
+  evaluate:
+    cmd: uv run python scripts/run_evaluate.py --train 
+      data/processed/features/train.csv --test data/processed/features/test.csv 
+      --model models/recommender.pt --metrics metrics/evaluate.json --k 10
+    deps:
+    - path: data/processed/features/test.csv
+      hash: md5
+      md5: d8d87608758a514365418acbadc5e86e
+      size: 122902
+    - path: data/processed/features/train.csv
+      hash: md5
+      md5: c1d18e54d3c67cbd8a8444bdba26682b
+      size: 490544
+    - path: models/recommender.pt
+      hash: md5
+      md5: e2e186caefa2351cb04e24780a433b49
+      size: 276165
     - path: scripts/run_evaluate.py
       hash: md5
-      md5: 2d5d116fd824bc483680bd16d48f4f45
-      size: 2616
+      md5: 37cc546d28d42fb7d9355a8d4fe79790
+      size: 2201
+    - path: src/evaluation
+      hash: md5
+      md5: e4c9dadd0d7f85d1d4cf103bde864890.dir
+      size: 11938
+      nfiles: 4
     outs:
     - path: metrics/evaluate.json
       hash: md5
-      md5: 7447748e1c41dcc49682e72a1d69f004
-      size: 163
+      md5: bc9e4173978928e06edc5dae2266aa6f
+      size: 178

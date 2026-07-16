@@ -31,6 +31,8 @@ htmlcov/
 
 # ML / experiment artifacts
 mlruns/
+mlflow.db
+mlflow.db-*
 mlartifacts/
 .mlflow/
 *.pt
@@ -53,9 +55,14 @@ wandb/
 !/models/.gitkeep
 !/models/*.dvc
 !/models/*.json
+!/models/*.pt
+!/models/recommender.pt
+/models/exp_*
 /metrics/**
 !/metrics/.gitkeep
 !/metrics/*.json
+/metrics/exp_*.json
+/metrics/tmp_params/
 
 # Local DVC remote (filesystem)
 .dvc-remote/
@@ -73,7 +80,6 @@ wandb/
 .coverage.*
 coverage.xml
 .hypothesis/
-.ipynb_checkpoints/
 
 # DVC local config overrides
 .dvc/config.local

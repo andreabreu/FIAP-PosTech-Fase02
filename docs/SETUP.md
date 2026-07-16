@@ -51,3 +51,17 @@ uv run dvc repro
 ```
 
 Detalhes em [DVC.md](DVC.md).
+
+## Treino / MLflow
+
+```bash
+# Treino MLP + métricas (sem MLflow)
+uv run python scripts/run_train.py --no-mlflow
+
+# Experimentos + Registry
+uv run python scripts/run_experiments.py --suite all
+uv run python scripts/promote_model.py --to both
+```
+
+Tracking local default: `sqlite:///mlflow.db` (ver `.env.example`).  
+No Docker Compose o serviço `train` usa `http://mlflow:5000`.
