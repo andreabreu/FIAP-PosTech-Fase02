@@ -1,0 +1,7 @@
+{
+  "model_name": "fiap-fase02-recommender",
+  "metric_key": "ndcg_at_10",
+  "metric_value": 0.006151,
+  "version": "1",
+  "stage": "Production"
+}
