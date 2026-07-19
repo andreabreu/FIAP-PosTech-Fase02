@@ -26,4 +26,6 @@ def test_model_factory_rejects_unknown_name() -> None:
 
 
 def test_available_models_sorted() -> None:
-    assert ModelFactory.available() == ["embedding", "mlp"]
+    available = ModelFactory.available()
+    assert available == sorted(available)
+    assert set(available) >= {"embedding", "mlp", "popularity", "svd"}
