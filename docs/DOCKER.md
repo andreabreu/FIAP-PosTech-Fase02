@@ -52,3 +52,5 @@ docker compose config
 uv run python -m src.training.entrypoint
 uv run pytest tests/test_docker_entrypoint_smoke.py -q
 ```
+
+Guia unificado: [GUIDE.md](GUIDE.md).

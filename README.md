@@ -32,7 +32,7 @@ uv run python scripts/validate_env.py
 uv run dvc pull && uv run dvc repro
 ```
 
-Docs: [SETUP](docs/SETUP.md) · [DVC](docs/DVC.md) · [DOCKER](docs/DOCKER.md) · [INSTALL](docs/INSTALL_CHECKLIST.md)
+Docs: [GUIDE](docs/GUIDE.md) · [SETUP](docs/SETUP.md) · [DVC](docs/DVC.md) · [DOCKER](docs/DOCKER.md) · [INSTALL](docs/INSTALL_CHECKLIST.md)
 
 ## Treino e experimentos
 

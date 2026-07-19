@@ -6,11 +6,13 @@ O projeto versiona dados com **DVC** e orquestra o pipeline em `dvc.yaml`:
 
 1. `preprocess` — limpa e deduplica interações
 2. `feature_eng` — encoding user/item + split train/test
-3. `train` — treino (stub até a F4; artifact em `models/`)
-4. `evaluate` — métricas leves em `metrics/evaluate.json`
+3. `train` — MLP PyTorch (`models/recommender.pt`)
+4. `evaluate` — Precision / Recall / Hit / NDCG @K
 
-Dataset raw (>=10k interações sintéticas): `data/raw/interactions.csv`  
+Dataset raw (≥10k interações sintéticas): `data/raw/interactions.csv`  
 Pointer Git: `data/raw/interactions.csv.dvc`
+
+Guia unificado: [GUIDE.md](GUIDE.md).
 
 ## Pré-requisitos
 
@@ -23,13 +25,12 @@ uv sync --all-groups
 Remote default: diretório `.dvc-remote/` (gitignored).
 
 ```bash
-# já configurado no .dvc/config como remote "localremote"
 uv run dvc remote list
 uv run dvc push
 uv run dvc pull
 ```
 
-Para um remote compartilhado (S3/GCS/SSH), altere `.dvc/config` ou use:
+Para remote compartilhado (S3/GCS/SSH):
 
 ```bash
 uv run dvc remote add -d myremote s3://bucket/path
@@ -46,13 +47,11 @@ uv run dvc add data/raw/interactions.csv
 ## Rodar o pipeline
 
 ```bash
-uv run dvc pull          # baixa dados versionados
-uv run dvc repro         # executa stages desatualizados
-uv run dvc metrics show  # métricas cache:false
-uv run dvc dag           # visualiza dependências
+uv run dvc pull
+uv run dvc repro
+uv run dvc metrics show
+uv run dvc dag
 ```
-
-Stages individuais:
 
 ```bash
 uv run dvc repro preprocess
@@ -63,15 +62,14 @@ uv run dvc repro evaluate
 
 ## Params
 
-Hiperparâmetros de features/treino em `params.yaml`.  
-Alterar params invalida stages dependentes no próximo `dvc repro`.
+Hiperparâmetros em `params.yaml`. Alterar params invalida stages dependentes.
 
 ## Artefatos
 
 | Path | Origem |
 |------|--------|
 | `data/raw/interactions.csv` | DVC tracked |
-| `data/processed/interactions_clean.csv` | stage preprocess |
-| `data/processed/features/` | stage feature_eng |
-| `models/recommender_stub.json` | stage train |
-| `metrics/*.json` | métricas (commitadas, `cache: false`) |
+| `data/processed/interactions_clean.csv` | preprocess |
+| `data/processed/features/` | feature_eng |
+| `models/recommender.pt` | train |
+| `metrics/*.json` | métricas (`cache: false`) |

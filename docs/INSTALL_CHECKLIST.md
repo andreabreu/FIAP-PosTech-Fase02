@@ -10,17 +10,18 @@ Execute em um diretório temporário / máquina limpa:
 6. `uv run ruff check src tests scripts` → sem erros
 7. `uv run dvc pull` → baixa `data/raw/interactions.csv`
 8. `uv run dvc repro` → pipeline ≥3 stages OK
+9. (Opcional) `uv run python scripts/run_experiments.py --suite all`
+10. (Opcional) `uv run python scripts/promote_model.py --to both`
+
+Guia unificado: [GUIDE.md](GUIDE.md).
 
 ## Extras opcionais
 
 ```bash
-# API scaffolding (FastAPI) — futuro endpoint de recomendação
+# API scaffolding (FastAPI)
 uv sync --extra api
 
-# Training tooling explícito (já coberto pelas deps principais + tqdm)
-uv sync --extra training
-
-# Docker
+# Docker (MLflow UI em http://127.0.0.1:5001)
 docker compose up --build
 ```
 
