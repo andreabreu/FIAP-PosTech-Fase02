@@ -24,9 +24,10 @@ baseado no comportamento de navegação e interações user–item.
 ## Entregas
 
 - Repositório GitHub reproduzível
-- Vídeo STAR ≤ 5 minutos
+- ~~Vídeo STAR ≤ 5 minutos~~ — **fora de escopo** (decisão da dupla)
 - (Opcional) Deploy em nuvem
 
-## Fora de escopo desta fase de kickoff
+## Fora de escopo
 
-Implementação do modelo, DVC e Docker — virão nas próximas etapas do roadmap.
+- Vídeo STAR (roteiro, gravação, upload e link no README)
+- Implementação adicional pós code freeze, salvo hotfix crítico
