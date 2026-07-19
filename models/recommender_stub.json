@@ -1,7 +1,0 @@
-{
-  "model_name": "mlp",
-  "n_train_rows": 9532,
-  "n_users": 800,
-  "n_items": 1200,
-  "status": "stub_fitted"
-}
