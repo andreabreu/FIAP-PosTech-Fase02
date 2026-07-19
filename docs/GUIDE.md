@@ -170,5 +170,5 @@ uv run pytest -q
 ## 9. Entrega
 
 - Repositório GitHub reproduzível (este guia + README)
-- Vídeo STAR: **fora de escopo** (decisão da dupla) — ver [PROJECT_BRIEF.md](PROJECT_BRIEF.md)
-- Deploy nuvem: opcional (+5% bônus), não bloqueante
+- Vídeo STAR ≤ 5 min (arquivo local em `docs/STAR_Fase02_apresentacao.mp4` — subir YouTube/Drive e colar link no README)
+- Deploy nuvem (bônus): https://study-pos-fiap-fase02.aedigital.solutions/health

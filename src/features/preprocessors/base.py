@@ -1,4 +1,4 @@
-"""Strategy interface for feature preprocessors."""
+"""Strategy base dos preprocessors (fit/transform)."""
 
 from __future__ import annotations
 
@@ -7,37 +7,16 @@ from typing import Any
 
 
 class PreprocessorStrategy(ABC):
-    """Strategy contract for transforming interaction datasets."""
+    """Interface fit/transform — dá para trocar o preprocessor sem mudar o pipeline."""
 
     @abstractmethod
     def fit(self, data: Any) -> PreprocessorStrategy:
-        """Learn transformation parameters from data.
-
-        Args:
-            data: Raw or intermediate interaction data.
-
-        Returns:
-            PreprocessorStrategy: Fitted strategy.
-        """
+        """Ajusta a strategy aos dados."""
 
     @abstractmethod
     def transform(self, data: Any) -> Any:
-        """Apply the learned transformation.
-
-        Args:
-            data: Dataset to transform.
-
-        Returns:
-            Any: Transformed dataset.
-        """
+        """Aplica a transformação."""
 
     def fit_transform(self, data: Any) -> Any:
-        """Fit on data and transform in one step.
-
-        Args:
-            data: Dataset to fit and transform.
-
-        Returns:
-            Any: Transformed dataset.
-        """
+        """Atalho fit + transform."""
         return self.fit(data).transform(data)

@@ -14,27 +14,13 @@ logger = get_logger(__name__)
 
 
 def load_params(path: Path) -> dict:
-    """Load pipeline parameters from ``params.yaml``.
-
-    Args:
-        path: Path to params file.
-
-    Returns:
-        dict: Nested parameter mapping.
-    """
+    """Load pipeline parameters from ``params.yaml``."""
     with path.open(encoding="utf-8") as handle:
         return yaml.safe_load(handle) or {}
 
 
 def encode_ids(frame: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, dict[str, int]]]:
-    """Map string user/item ids to contiguous integer indices.
-
-    Args:
-        frame: Clean interactions with ``user_id`` / ``item_id``.
-
-    Returns:
-        tuple: Encoded frame and id maps.
-    """
+    """Map string user/item ids to contiguous integer indices."""
     out = frame.copy()
     user_ids = sorted(out["user_id"].astype(str).unique())
     item_ids = sorted(out["item_id"].astype(str).unique())
@@ -50,16 +36,7 @@ def train_test_split_by_user(
     test_ratio: float = 0.2,
     seed: int = 42,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Hold out a fraction of each user's interactions for evaluation.
-
-    Args:
-        frame: Encoded interactions.
-        test_ratio: Fraction of interactions per user reserved for test.
-        seed: RNG seed.
-
-    Returns:
-        tuple: ``(train_df, test_df)``.
-    """
+    """Hold out a fraction of each user's interactions for evaluation."""
     parts_train: list[pd.DataFrame] = []
     parts_test: list[pd.DataFrame] = []
     shuffled = frame.sample(frac=1.0, random_state=seed)
@@ -88,16 +65,7 @@ def build_features(
     output_dir: Path,
     params_path: Path,
 ) -> dict[str, int]:
-    """Build encoded train/test feature tables for downstream training.
-
-    Args:
-        processed_path: Clean interactions from preprocess stage.
-        output_dir: Directory for feature artifacts.
-        params_path: Path to ``params.yaml``.
-
-    Returns:
-        dict[str, int]: Summary counts.
-    """
+    """Build encoded train/test feature tables for downstream training."""
     params = load_params(params_path)
     feature_params = params.get("feature_eng", {})
     test_ratio = float(feature_params.get("test_ratio", 0.2))

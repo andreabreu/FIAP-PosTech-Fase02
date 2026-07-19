@@ -20,14 +20,7 @@ EVENT_WEIGHT = {
 
 
 def load_raw_interactions(path: Path) -> pd.DataFrame:
-    """Load raw CSV interactions and coerce dtypes.
-
-    Args:
-        path: Path to raw interactions CSV.
-
-    Returns:
-        pd.DataFrame: Raw frame with normalized columns.
-    """
+    """Load raw CSV interactions and coerce dtypes."""
     frame = pd.read_csv(path)
     required = {"user_id", "item_id", "event_type"}
     missing = required - set(frame.columns)
@@ -37,14 +30,7 @@ def load_raw_interactions(path: Path) -> pd.DataFrame:
 
 
 def validate_rows(frame: pd.DataFrame) -> pd.DataFrame:
-    """Drop invalid rows using the Interaction schema.
-
-    Args:
-        frame: Raw interactions.
-
-    Returns:
-        pd.DataFrame: Validated interactions only.
-    """
+    """Drop invalid rows using the Interaction schema."""
     records: list[dict] = []
     dropped = 0
     for row in frame.to_dict(orient="records"):
@@ -75,14 +61,7 @@ def validate_rows(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def add_implicit_score(frame: pd.DataFrame) -> pd.DataFrame:
-    """Derive an implicit feedback score from event type / rating.
-
-    Args:
-        frame: Validated interactions.
-
-    Returns:
-        pd.DataFrame: Frame with ``score`` column.
-    """
+    """Derive an implicit feedback score from event type / rating."""
     out = frame.copy()
     base = out["event_type"].map(EVENT_WEIGHT).fillna(1.0)
     rating = pd.to_numeric(out.get("rating"), errors="coerce")
@@ -91,28 +70,13 @@ def add_implicit_score(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def deduplicate_interactions(frame: pd.DataFrame) -> pd.DataFrame:
-    """Keep the strongest score per user-item pair.
-
-    Args:
-        frame: Scored interactions.
-
-    Returns:
-        pd.DataFrame: Deduplicated interactions.
-    """
+    """Keep the strongest score per user-item pair."""
     sorted_frame = frame.sort_values("score", ascending=False)
     return sorted_frame.drop_duplicates(subset=["user_id", "item_id"], keep="first")
 
 
 def preprocess_interactions(raw_path: Path, output_path: Path) -> dict[str, int]:
-    """Run the full preprocess stage and write a parquet/csv artifact.
-
-    Args:
-        raw_path: Raw interactions CSV.
-        output_path: Destination path (``.parquet`` or ``.csv``).
-
-    Returns:
-        dict[str, int]: Summary counts for logging / DVC metrics.
-    """
+    """Run the full preprocess stage and write a parquet/csv artifact."""
     raw = load_raw_interactions(raw_path)
     valid = validate_rows(raw)
     scored = add_implicit_score(valid)

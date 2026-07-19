@@ -1,4 +1,4 @@
-"""Default configuration values (stubs)."""
+"""Valores default do projeto (além do params.yaml / Settings)."""
 
 from __future__ import annotations
 
@@ -19,9 +19,5 @@ DEFAULT_CONFIG: dict[str, Any] = {
 
 
 def get_default_config() -> dict[str, Any]:
-    """Return a shallow copy of the default configuration.
-
-    Returns:
-        dict[str, Any]: Default project configuration.
-    """
+    """Cópia rasa dos defaults."""
     return dict(DEFAULT_CONFIG)

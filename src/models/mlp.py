@@ -34,15 +34,7 @@ class MLPNet(nn.Module):
         nn.init.xavier_uniform_(self.item_emb.weight)
 
     def forward(self, users: torch.Tensor, items: torch.Tensor) -> torch.Tensor:
-        """Score user-item pairs.
-
-        Args:
-            users: User index tensor ``[B]``.
-            items: Item index tensor ``[B]``.
-
-        Returns:
-            torch.Tensor: Raw logits ``[B]``.
-        """
+        """Score user-item pairs."""
         x = torch.cat([self.user_emb(users), self.item_emb(items)], dim=-1)
         return self.mlp(x).squeeze(-1)
 
@@ -77,14 +69,7 @@ class MLPRecommender(RecommenderModel):
         self.net.to(self.device)
 
     def fit(self, interactions: Any) -> MLPRecommender:
-        """Mark as fitted when external trainer already trained ``self.net``.
-
-        Args:
-            interactions: Unused when weights come from :mod:`src.training.loop`.
-
-        Returns:
-            MLPRecommender: Self.
-        """
+        """Mark as fitted when external trainer already trained ``self.net``."""
         _ = interactions
         if self.net is None and self.n_users > 0 and self.n_items > 0:
             self.build(self.n_users, self.n_items)
@@ -92,15 +77,7 @@ class MLPRecommender(RecommenderModel):
         return self
 
     def predict(self, user_ids: Any, item_ids: Any) -> list[float]:
-        """Score pairs with the fitted network.
-
-        Args:
-            user_ids: Iterable of user indices.
-            item_ids: Iterable of item indices.
-
-        Returns:
-            list[float]: Predicted scores (sigmoid probabilities).
-        """
+        """Score pairs with the fitted network."""
         if self.net is None:
             return [0.0] * max(len(list(user_ids)), 0)
         users = torch.as_tensor(list(user_ids), dtype=torch.long, device=self.device)
@@ -112,15 +89,7 @@ class MLPRecommender(RecommenderModel):
         return [float(x) for x in probs]
 
     def score_user_items(self, user_idx: int, item_indices: np.ndarray) -> np.ndarray:
-        """Score many items for one user.
-
-        Args:
-            user_idx: User index.
-            item_indices: Candidate item indices.
-
-        Returns:
-            np.ndarray: Scores aligned with ``item_indices``.
-        """
+        """Score many items for one user."""
         if self.net is None or len(item_indices) == 0:
             return np.zeros(len(item_indices), dtype=np.float64)
         users = torch.full(

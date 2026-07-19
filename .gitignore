@@ -86,3 +86,14 @@ coverage.xml
 
 # Compiled / packaging leftovers
 pip-wheel-metadata/
+
+# Rascunhos locais do vídeo (docs/star* e docs/STAR*)
+docs/star*
+docs/STAR*
+
+# Scripts e notas de deploy local (fora do escopo do repo)
+scripts/azure_bootstrap.sh
+docs/DEPLOY_AZURE.md
+.github/workflows/deploy-aca.yml
+artifacts/
+Dockerfile.api

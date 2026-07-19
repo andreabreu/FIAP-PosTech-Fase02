@@ -20,14 +20,7 @@ class Interaction(BaseModel):
     @field_validator("user_id", "item_id")
     @classmethod
     def strip_ids(cls, value: str) -> str:
-        """Normalize identifiers by stripping whitespace.
-
-        Args:
-            value: Raw identifier.
-
-        Returns:
-            str: Normalized identifier.
-        """
+        """Normalize identifiers by stripping whitespace."""
         cleaned = value.strip()
         if not cleaned:
             raise ValueError("identifier must not be blank")

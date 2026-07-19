@@ -59,20 +59,7 @@ def evaluate_ranking(
     k: int = 10,
     n_items: int | None = None,
 ) -> dict[str, float]:
-    """Evaluate ranking metrics averaged over test users.
-
-    Known train items are masked so recommendations focus on novel items.
-
-    Args:
-        train_df: Training interactions with ``user_idx`` / ``item_idx``.
-        test_df: Held-out interactions.
-        score_fn: ``(user_idx, item_indices) -> scores``.
-        k: Cutoff for top-K metrics.
-        n_items: Catalog size; inferred when omitted.
-
-    Returns:
-        dict[str, float]: Mean Precision/Recall/Hit/NDCG at K.
-    """
+    """Evaluate ranking metrics averaged over test users."""
     if n_items is None:
         n_items = int(max(train_df["item_idx"].max(), test_df["item_idx"].max())) + 1
     all_items = np.arange(n_items, dtype=np.int64)

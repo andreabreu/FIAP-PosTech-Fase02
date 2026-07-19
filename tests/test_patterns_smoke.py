@@ -1,4 +1,4 @@
-"""Smoke tests for factory and preprocessor strategy interfaces."""
+"""Smoke tests dos padrões Factory (e Strategy legado)."""
 
 from __future__ import annotations
 
@@ -28,4 +28,4 @@ def test_model_factory_rejects_unknown_name() -> None:
 def test_available_models_sorted() -> None:
     available = ModelFactory.available()
     assert available == sorted(available)
-    assert set(available) >= {"embedding", "mlp", "popularity", "svd"}
+    assert set(available) == {"embedding", "mlp", "popularity", "svd"}

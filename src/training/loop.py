@@ -121,23 +121,7 @@ def train_mlp(
     neg_per_pos: int = 1,
     seed: int = 42,
 ) -> tuple[MLPRecommender, TrainResult]:
-    """Train :class:`MLPRecommender` with early stopping on val BCE.
-
-    Args:
-        train_df: Feature table with ``user_idx`` / ``item_idx``.
-        embedding_dim: Embedding size.
-        hidden_dim: MLP hidden size.
-        batch_size: Mini-batch size.
-        max_epochs: Maximum epochs.
-        patience: Early-stopping patience.
-        learning_rate: Adam learning rate.
-        val_ratio: Hold-out fraction from train for validation.
-        neg_per_pos: Negatives sampled per positive.
-        seed: RNG seed.
-
-    Returns:
-        tuple: Fitted model and training summary.
-    """
+    """Train :class:`MLPRecommender` with early stopping on val BCE."""
     n_users = int(train_df["user_idx"].max()) + 1
     n_items = int(train_df["item_idx"].max()) + 1
     fit_df, val_df = _split_val(train_df, val_ratio, seed)

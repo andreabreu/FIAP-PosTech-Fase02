@@ -1,4 +1,4 @@
-"""End-to-end training orchestration used by CLI, DVC and Docker."""
+"""Treino + avaliação usados pelo DVC / CLI / Docker."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ import yaml
 
 from src.config import get_settings
 from src.evaluation.metrics import evaluate_ranking
-from src.models.baselines import PopularityRecommender, SVDRecommender
+from src.models.factory import ModelFactory
 from src.models.mlp import MLPRecommender
 from src.training.loop import train_mlp
 from src.training.mlflow_tracking import (
@@ -27,7 +27,7 @@ logger = get_logger(__name__)
 
 
 def load_params(path: Path) -> dict[str, Any]:
-    """Load ``params.yaml``."""
+    """Lê params.yaml."""
     with path.open(encoding="utf-8") as handle:
         return yaml.safe_load(handle) or {}
 
@@ -41,20 +41,7 @@ def train_and_evaluate(
     run_name: str | None = None,
     log_mlflow: bool = True,
 ) -> dict[str, Any]:
-    """Train configured model, evaluate ranking metrics, optionally log MLflow.
-
-    Args:
-        train_path: Train feature CSV.
-        test_path: Test feature CSV.
-        params_path: Params YAML.
-        model_out: Destination for model artifact (``.pt`` or meta JSON).
-        metrics_out: Destination metrics JSON.
-        run_name: Optional MLflow run name.
-        log_mlflow: Whether to create an MLflow run.
-
-    Returns:
-        dict[str, Any]: Combined train + eval payload.
-    """
+    """Treina o modelo do params.yaml, avalia ranking e opcionalmente loga no MLflow."""
     settings = get_settings()
     params = load_params(params_path)
     train_cfg = params.get("train", {})
@@ -71,6 +58,7 @@ def train_and_evaluate(
     train_meta: dict[str, Any]
     score_fn: Any
 
+    # MLP usa loop próprio (early stopping); baselines passam pela Factory
     if model_name in {"mlp", "embedding"}:
         model, result = train_mlp(
             train_df,
@@ -103,36 +91,28 @@ def train_and_evaluate(
             "model_path": str(model_out),
             "status": "fitted",
         }
-    elif model_name == "popularity":
-        model = PopularityRecommender().fit(train_df)
-        score_fn = model.score_user_items
+    elif model_name in {"popularity", "svd"}:
+        factory_kwargs: dict[str, Any] = {}
+        if model_name == "svd":
+            factory_kwargs["n_components"] = int(
+                train_cfg.get("embedding_dim", embedding_dim)
+            )
+        model = ModelFactory.create(model_name, **factory_kwargs)
+        model.fit(train_df)
+        score_fn = model.score_user_items  # type: ignore[attr-defined]
         meta = {
             "model_name": model_name,
             "n_train_rows": int(len(train_df)),
-            "n_items": model.n_items,
+            "n_items": getattr(model, "n_items", 0),
             "status": "fitted",
         }
-        model_out.parent.mkdir(parents=True, exist_ok=True)
-        model_out.write_text(json.dumps(meta, indent=2), encoding="utf-8")
-        train_meta = {**meta, "model_path": str(model_out)}
-    elif model_name == "svd":
-        model = SVDRecommender(
-            n_components=int(train_cfg.get("embedding_dim", embedding_dim)),
-        ).fit(train_df)
-        score_fn = model.score_user_items
-        meta = {
-            "model_name": model_name,
-            "n_train_rows": int(len(train_df)),
-            "n_users": model.n_users,
-            "n_items": model.n_items,
-            "status": "fitted",
-        }
+        if hasattr(model, "n_users"):
+            meta["n_users"] = model.n_users
         model_out.parent.mkdir(parents=True, exist_ok=True)
         model_out.write_text(json.dumps(meta, indent=2), encoding="utf-8")
         train_meta = {**meta, "model_path": str(model_out)}
     else:
-        raise KeyError(f"unsupported model_name={model_name}")
-
+        raise KeyError(f"modelo não suportado: {model_name}")
     ranking = evaluate_ranking(train_df, test_df, score_fn, k=k)
     payload = {**train_meta, **ranking, "k": k}
 

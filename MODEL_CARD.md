@@ -1,65 +1,42 @@
-# Model Card — FIAP Pós Tech Fase 02 Recommender
+# Model Card — Fase 02 (recomendação)
 
-## Model details
+## Modelo
 
-| Field | Value |
+| Campo | Valor |
 |-------|--------|
-| Name | `fiap-fase02-recommender` |
-| Task | Implicit feedback product recommendation |
-| Framework | PyTorch MLP (user/item embeddings + MLP head) |
-| Baselines | Popularity · TruncatedSVD (sklearn) |
-| Owners | Andre Abreu · Elizandra Monteiro |
-| Version | 1.0.0-rc |
+| Nome | `fiap-fase02-recommender` |
+| Tarefa | Recomendação (feedback implícito) |
+| Framework | PyTorch MLP (embeddings user/item) |
+| Baselines | Popularity e TruncatedSVD (sklearn) |
+| Autores | Andre Abreu e Elizandra Monteiro |
 
-## Intended use
+## Uso
 
-Suggest top-K catalog items for an e-commerce user based on historical
-user–item interactions (view / click / cart / purchase).
+Sugerir top-K itens do catálogo a partir do histórico de interações (view, click, cart, purchase).
 
-**Out of scope:** real-time session ranking, content-based cold-start for
-brand-new SKUs without any interactions, fairness auditing at segment level.
+## Dados de treino
 
-## Training data
+- CSV sintético em `data/raw/interactions.csv` (DVC)
+- ~10k linhas, ~800 users, ~1200 items
 
-- Synthetic interactions CSV (`data/raw/interactions.csv`) versioned with DVC
-- ≥ 10,000 rows · ~800 users · ~1,200 items
-- Implicit scores derived from event type (+ optional rating)
-
-## Metrics (held-out users, K=10)
-
-Latest sweep (`metrics/experiments_summary.json`):
+## Métricas (K=10)
 
 | Modelo | P@10 | R@10 | Hit@10 | NDCG@10 |
 |--------|-----:|-----:|-------:|--------:|
 | popularity | 0.0026 | 0.0082 | 0.0263 | 0.0054 |
 | svd | 0.0025 | 0.0074 | 0.0238 | 0.0054 |
-| mlp (best → Production) | 0.0026 | 0.0086 | 0.0263 | 0.0062 |
+| mlp (Production) | 0.0026 | 0.0086 | 0.0263 | 0.0062 |
 
-Primary ranking metrics:
+## Limitações
 
-1. Precision@10  
-2. Recall@10  
-3. Hit-Rate@10  
-4. NDCG@10
+- Dados sintéticos (não representam sazonalidade real)
+- Popularity favorece itens head / long-tail fica fraco
+- Cold-start (user/item sem histórico) tem score fraco
+- Sem atributos demográficos
 
-## Limits and biases
-
-- Synthetic data does **not** reflect real purchase seasonality or catalog churn.
-- Popularity baseline over-recommends head items (long-tail under-exposure).
-- MLP trained with random negatives may underperform on sparse users.
-- No demographic attributes → cannot measure disparate impact across groups.
-- Cold-start users/items without history receive weak / random scores.
-
-## Ethical considerations
-
-Recommendations can amplify popularity bias and reduce catalog diversity.
-Production use should add business rules (stock, category caps, exploration).
-
-## How to reproduce
+## Como reproduzir
 
 ```bash
 uv sync --all-groups
 uv run dvc pull && uv run dvc repro
-uv run python scripts/run_experiments.py --suite all
-uv run python scripts/promote_model.py --to both
 ```

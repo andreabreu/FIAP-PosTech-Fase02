@@ -1,4 +1,4 @@
-"""Feature pipeline orchestration (no model dependencies)."""
+"""Encadeia strategies de preprocessor."""
 
 from __future__ import annotations
 
@@ -9,20 +9,12 @@ from src.features.preprocessors.passthrough import PassthroughPreprocessor
 
 
 class FeaturePipeline:
-    """Runs one or more preprocessor strategies in sequence."""
+    """Roda as strategies em sequência (default = passthrough)."""
 
     def __init__(self, strategies: list[PreprocessorStrategy] | None = None) -> None:
         self.strategies = strategies or [PassthroughPreprocessor()]
 
     def run(self, data: Any) -> Any:
-        """Apply all strategies sequentially.
-
-        Args:
-            data: Input dataset.
-
-        Returns:
-            Any: Transformed dataset.
-        """
         result = data
         for strategy in self.strategies:
             result = strategy.fit_transform(result)

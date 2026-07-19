@@ -20,15 +20,7 @@ def configure_mlflow(
     tracking_uri: str | None = None,
     experiment_name: str | None = None,
 ) -> str:
-    """Configure tracking URI and experiment.
-
-    Args:
-        tracking_uri: MLflow tracking URI (env fallback).
-        experiment_name: Experiment name (env fallback).
-
-    Returns:
-        str: Active experiment name.
-    """
+    """Configure tracking URI and experiment."""
     uri = tracking_uri or os.getenv("MLFLOW_TRACKING_URI", "file:./mlruns")
     name = experiment_name or os.getenv(
         "MLFLOW_EXPERIMENT_NAME",

@@ -43,14 +43,7 @@ class Settings(BaseSettings):
     )
     @classmethod
     def normalize_path(cls, value: str) -> str:
-        """Normalize configured directories to posix-like relative paths.
-
-        Args:
-            value: Raw directory path from env.
-
-        Returns:
-            str: Normalized path string.
-        """
+        """Normalize configured directories to posix-like relative paths."""
         return Path(value).as_posix()
 
     def ensure_directories(self) -> None:
@@ -65,9 +58,5 @@ class Settings(BaseSettings):
 
 
 def get_settings() -> Settings:
-    """Build settings from env/.env.
-
-    Returns:
-        Settings: Parsed settings instance.
-    """
+    """Build settings from env/.env."""
     return Settings()

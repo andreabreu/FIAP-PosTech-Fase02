@@ -1,5 +1,5 @@
-"""Domain interfaces for data access and recommender models."""
+"""Contratos de domínio."""
 
-from src.domain.interfaces import DataLoader, RecommenderModel
+from src.domain.interfaces import RecommenderModel
 
-__all__ = ["DataLoader", "RecommenderModel"]
+__all__ = ["RecommenderModel"]

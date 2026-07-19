@@ -1,11 +1,5 @@
-"""Data loading package."""
+"""Carga de dados."""
 
-from src.data.loader import CsvInteractionLoader
-from src.data.preprocess import preprocess_interactions
-from src.data.readers import InteractionReader
+from src.data.loader import CsvInteractionLoader, load_interactions
 
-__all__ = [
-    "CsvInteractionLoader",
-    "InteractionReader",
-    "preprocess_interactions",
-]
+__all__ = ["CsvInteractionLoader", "load_interactions"]

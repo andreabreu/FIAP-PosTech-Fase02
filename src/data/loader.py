@@ -1,29 +1,32 @@
-"""High-level data loader facade."""
+"""Leitura simples do CSV de interações."""
 
 from __future__ import annotations
 
+import csv
 from pathlib import Path
 from typing import Any
 
-from src.data.readers import InteractionReader
 from src.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
 
+def load_interactions(path: str | Path) -> list[dict[str, Any]]:
+    """Lê o CSV; se o arquivo não existir, devolve lista vazia."""
+    file_path = Path(path)
+    if not file_path.exists():
+        return []
+    with file_path.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    logger.info("loaded %s rows from %s", len(rows), file_path)
+    return rows
+
+
 class CsvInteractionLoader:
-    """Load interactions from a CSV path using a dedicated reader."""
+    """Wrapper usado nos testes / CLI curtos."""
 
     def __init__(self, path: str | Path) -> None:
         self.path = Path(path)
-        self._reader = InteractionReader(self.path)
 
     def load(self) -> list[dict[str, Any]]:
-        """Load interaction rows from disk.
-
-        Returns:
-            list[dict[str, Any]]: Raw interaction dictionaries.
-        """
-        rows = self._reader.read()
-        logger.info("loaded %s rows from %s", len(rows), self.path)
-        return rows
+        return load_interactions(self.path)

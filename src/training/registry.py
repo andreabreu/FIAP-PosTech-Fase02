@@ -19,16 +19,7 @@ def register_run_model(
     artifact_path: str = "model",
     model_name: str = REGISTERED_MODEL_NAME,
 ) -> str:
-    """Register a logged model from a run into the Model Registry.
-
-    Args:
-        run_id: Source MLflow run id.
-        artifact_path: Artifact subpath used when logging the model.
-        model_name: Registered model name.
-
-    Returns:
-        str: Created model version string.
-    """
+    """Register a logged model from a run into the Model Registry."""
     model_uri = f"runs:/{run_id}/{artifact_path}"
     result = mlflow.register_model(model_uri, model_name)
     logger.info("registered %s version=%s", model_name, result.version)
@@ -41,14 +32,7 @@ def transition_stage(
     model_name: str = REGISTERED_MODEL_NAME,
     archive_existing: bool = True,
 ) -> None:
-    """Transition a model version to ``Staging`` or ``Production``.
-
-    Args:
-        version: Model version.
-        stage: Target stage name.
-        model_name: Registered model name.
-        archive_existing: Archive other versions in the target stage.
-    """
+    """Transition a model version to ``Staging`` or ``Production``."""
     client = MlflowClient()
     client.transition_model_version_stage(
         name=model_name,
@@ -64,11 +48,7 @@ def promote_best_run_to_staging(
     metric_key: str = "ndcg_at_10",
     model_name: str = REGISTERED_MODEL_NAME,
 ) -> dict[str, Any]:
-    """Pick the best finished run by metric and promote to Staging.
-
-    Returns:
-        dict[str, Any]: Summary with run_id, metric, version.
-    """
+    """Pick the best finished run by metric and promote to Staging."""
     client = MlflowClient()
     exp = client.get_experiment_by_name(experiment_name)
     if exp is None:
