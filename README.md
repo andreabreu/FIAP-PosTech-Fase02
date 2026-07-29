@@ -8,6 +8,11 @@ Sistema de recomendação de produtos (e-commerce) com interações user–item.
 
 Fase 01 (churn): [FIAP-PosTech](https://github.com/andreabreu/FIAP-PosTech)
 
+## Vídeo STAR
+
+Apresentação (Situation · Task · Action · Result):  
+https://youtu.be/gGsMKGuLDXs
+
 ## O que tem no projeto
 
 - Modelo MLP (PyTorch) + baselines popularity e SVD (sklearn)
